@@ -12,6 +12,7 @@ export type Product = {
   brand: string
   category: string
   image: string
+  tags?: string[]
   prices: {
     shopId: string
     price: number
@@ -260,14 +261,77 @@ export const shops: Shop[] = [
       { lat: 51.5012, lng: -0.0238, address: 'Currys, Canary Wharf, London' },
     ]
   },
-  { 
-    id: 'johnsons', 
-    name: 'Robert Dyas', 
-    logo: '/shops/robertdyas.png', 
+  {
+    id: 'johnsons',
+    name: 'Robert Dyas',
+    logo: '/shops/robertdyas.png',
     color: '#003087',
     locations: [
       { lat: 51.5091, lng: -0.1371, address: 'Robert Dyas, Piccadilly, London' },
       { lat: 51.5207, lng: -0.1268, address: 'Robert Dyas, Euston, London' },
+    ]
+  },
+  {
+    id: 'johnlewis',
+    name: 'John Lewis',
+    logo: '/shops/johnlewis.png',
+    color: '#333333',
+    locations: [
+      { lat: 51.5155, lng: -0.1426, address: 'John Lewis, Oxford Street, London' },
+      { lat: 51.5421, lng: -0.0060, address: 'John Lewis, Stratford City, London' },
+      { lat: 51.4965, lng: -0.1769, address: 'John Lewis, Sloane Square, London' },
+    ]
+  },
+  {
+    id: 'ao',
+    name: 'AO.com',
+    logo: '/shops/ao.png',
+    color: '#E2001A',
+    locations: [
+      { lat: 51.5074, lng: -0.1278, address: 'AO.com Online (London delivery)' },
+    ]
+  },
+  {
+    id: 'ikea',
+    name: 'IKEA',
+    logo: '/shops/ikea.png',
+    color: '#0058A3',
+    locations: [
+      { lat: 51.5607, lng: -0.3068, address: 'IKEA, Wembley, London' },
+      { lat: 51.3726, lng: -0.1140, address: 'IKEA, Croydon, London' },
+      { lat: 51.5398, lng: -0.0166, address: 'IKEA, Tottenham, London' },
+    ]
+  },
+  {
+    id: 'dunelm',
+    name: 'Dunelm',
+    logo: '/shops/dunelm.png',
+    color: '#1B3A5C',
+    locations: [
+      { lat: 51.5174, lng: -0.1312, address: 'Dunelm, Tottenham Court Road, London' },
+      { lat: 51.4488, lng: -0.1103, address: 'Dunelm, Brixton, London' },
+    ]
+  },
+  {
+    id: 'next',
+    name: 'Next',
+    logo: '/shops/next.png',
+    color: '#000000',
+    locations: [
+      { lat: 51.5155, lng: -0.1414, address: 'Next, Oxford Street, London' },
+      { lat: 51.5012, lng: -0.1594, address: 'Next, Kensington, London' },
+      { lat: 51.5421, lng: -0.0060, address: 'Next, Westfield Stratford, London' },
+    ]
+  },
+  {
+    id: 'marksandspencer',
+    name: 'M&S',
+    logo: '/shops/ms.png',
+    color: '#3B3938',
+    locations: [
+      { lat: 51.5155, lng: -0.1426, address: 'M&S, Marble Arch, London' },
+      { lat: 51.5109, lng: -0.1301, address: 'M&S, Oxford Street, London' },
+      { lat: 51.5033, lng: -0.1419, address: 'M&S, Victoria, London' },
     ]
   },
 ]
@@ -285,6 +349,16 @@ export const categories = [
   { id: 'snacks', name: 'Snacks', icon: 'Cookie', color: 'bg-yellow-100 text-yellow-700' },
   { id: 'electronics', name: 'Electronics', icon: 'Laptop', color: 'bg-indigo-100 text-indigo-700' },
   { id: 'beauty', name: 'Beauty', icon: 'Sparkles', color: 'bg-fuchsia-100 text-fuchsia-700' },
+]
+
+export const bigPurchaseCategories = [
+  { id: 'tv', name: 'TVs', icon: 'Tv', color: 'bg-slate-100 text-slate-700' },
+  { id: 'laptop', name: 'Laptops', icon: 'Laptop', color: 'bg-indigo-100 text-indigo-700' },
+  { id: 'phone', name: 'Phones', icon: 'Smartphone', color: 'bg-blue-100 text-blue-700' },
+  { id: 'washing-machine', name: 'Washing Machines', icon: 'WashingMachine', color: 'bg-cyan-100 text-cyan-700' },
+  { id: 'fridge', name: 'Fridge Freezers', icon: 'Refrigerator', color: 'bg-sky-100 text-sky-700' },
+  { id: 'sofa', name: 'Sofas', icon: 'Sofa', color: 'bg-amber-100 text-amber-700' },
+  { id: 'bed', name: 'Beds & Mattresses', icon: 'BedDouble', color: 'bg-purple-100 text-purple-700' },
 ]
 
 export const products: Product[] = [
@@ -933,6 +1007,7 @@ export const products: Product[] = [
     name: 'Mixed Selection Cat Food 40pk',
     brand: 'Felix',
     category: 'petfood',
+    tags: ['cat food', 'cat', 'pet food', 'felix', 'wet food', 'pouches'],
     image: 'https://images.unsplash.com/photo-1589924691995-400dc9ecc119?w=400',
     prices: [
       { shopId: 'petsathome', price: 14.50, inStock: true },
@@ -947,6 +1022,7 @@ export const products: Product[] = [
     name: 'Mixed Meat Selection 12pk',
     brand: 'Pedigree',
     category: 'petfood',
+    tags: ['dog food', 'dog', 'pet food', 'pedigree', 'wet food', 'pouches'],
     image: 'https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=400',
     prices: [
       { shopId: 'petsathome', price: 9.99, inStock: true },
@@ -961,6 +1037,7 @@ export const products: Product[] = [
     name: 'Temptations Cat Treats 85g',
     brand: 'Whiskas',
     category: 'petfood',
+    tags: ['cat food', 'cat', 'cat treats', 'pet food', 'whiskas'],
     image: 'https://images.unsplash.com/photo-1615497001839-b0a0eac3274c?w=400',
     prices: [
       { shopId: 'petsathome', price: 2.25, inStock: true },
@@ -974,6 +1051,7 @@ export const products: Product[] = [
     name: 'ProActive Health Adult Dog 12kg',
     brand: 'IAMS',
     category: 'petfood',
+    tags: ['dog food', 'dog', 'pet food', 'dry food', 'kibble'],
     image: 'https://images.unsplash.com/photo-1568640347023-a616a30bc3bd?w=400',
     prices: [
       { shopId: 'petsathome', price: 42.00, inStock: true },
@@ -1033,6 +1111,7 @@ export const products: Product[] = [
     name: 'Antibacterial Surface Spray 750ml',
     brand: 'Dettol',
     category: 'household',
+    tags: ['cleaning', 'disinfectant', 'antibacterial', 'spray', 'surface cleaner', 'household cleaner'],
     image: 'https://images.unsplash.com/photo-1584556812952-905ffd0c611a?w=400',
     prices: [
       { shopId: 'tesco', price: 3.50, inStock: true },
@@ -1047,6 +1126,7 @@ export const products: Product[] = [
     name: 'All Purpose Floor Cleaner 1L',
     brand: 'Flash',
     category: 'household',
+    tags: ['floor cleaner', 'cleaning', 'household cleaner', 'mop'],
     image: 'https://images.unsplash.com/photo-1584556812952-905ffd0c611a?w=400',
     prices: [
       { shopId: 'tesco', price: 2.50, inStock: true },
@@ -1054,6 +1134,439 @@ export const products: Product[] = [
       { shopId: 'asda', price: 2.35, inStock: true },
       { shopId: 'homebargains', price: 1.99, inStock: true },
       { shopId: 'wilko', price: 2.29, inStock: true },
+    ]
+  },
+  {
+    id: 'domestos-bleach-750ml',
+    name: 'Original Bleach 750ml',
+    brand: 'Domestos',
+    category: 'household',
+    tags: ['bleach', 'domestos', 'cleaning', 'toilet cleaner', 'disinfectant', 'household cleaner'],
+    image: 'https://images.unsplash.com/photo-1583947215259-38e31be8751f?w=400',
+    prices: [
+      { shopId: 'tesco', price: 1.50, inStock: true },
+      { shopId: 'sainsburys', price: 1.60, inStock: true },
+      { shopId: 'asda', price: 1.40, inStock: true },
+      { shopId: 'morrisons', price: 1.55, inStock: true },
+      { shopId: 'lidl', price: 1.29, inStock: true },
+      { shopId: 'aldi', price: 1.19, inStock: true },
+      { shopId: 'homebargains', price: 1.09, inStock: true },
+      { shopId: 'poundland', price: 1.00, inStock: true },
+    ]
+  },
+]
+
+// === BIG PURCHASES ===
+export const bigPurchaseProducts: Product[] = [
+  // TVs
+  {
+    id: 'samsung-55-4k-tv',
+    name: '55" Crystal UHD 4K Smart TV (2024)',
+    brand: 'Samsung',
+    category: 'tv',
+    tags: ['tv', 'television', 'samsung', '4k', 'smart tv', 'uhd', '55 inch'],
+    image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829e1?w=400',
+    prices: [
+      { shopId: 'currys', price: 549.00, inStock: true },
+      { shopId: 'johnlewis', price: 579.00, inStock: true },
+      { shopId: 'amazon', price: 499.00, inStock: true },
+      { shopId: 'argos', price: 519.00, inStock: true },
+    ]
+  },
+  {
+    id: 'lg-55-oled-tv',
+    name: '55" OLED C3 4K Smart TV',
+    brand: 'LG',
+    category: 'tv',
+    tags: ['tv', 'television', 'lg', 'oled', '4k', 'smart tv', '55 inch'],
+    image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829e1?w=400',
+    prices: [
+      { shopId: 'currys', price: 1199.00, inStock: true },
+      { shopId: 'johnlewis', price: 1249.00, inStock: true },
+      { shopId: 'amazon', price: 1099.00, inStock: true },
+      { shopId: 'ao', price: 1149.00, inStock: true },
+    ]
+  },
+  {
+    id: 'sony-50-bravia-tv',
+    name: 'Bravia 50" 4K HDR Smart TV',
+    brand: 'Sony',
+    category: 'tv',
+    tags: ['tv', 'television', 'sony', 'bravia', '4k', 'hdr', 'smart tv', '50 inch'],
+    image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829e1?w=400',
+    prices: [
+      { shopId: 'currys', price: 699.00, inStock: true },
+      { shopId: 'johnlewis', price: 749.00, inStock: true },
+      { shopId: 'amazon', price: 649.00, inStock: true },
+      { shopId: 'argos', price: 689.00, inStock: true },
+    ]
+  },
+  {
+    id: 'tcl-43-qled-tv',
+    name: '43" QLED 4K Smart TV',
+    brand: 'TCL',
+    category: 'tv',
+    tags: ['tv', 'television', 'tcl', 'qled', '4k', 'smart tv', '43 inch', 'budget tv'],
+    image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829e1?w=400',
+    prices: [
+      { shopId: 'currys', price: 329.00, inStock: true },
+      { shopId: 'amazon', price: 299.00, inStock: true },
+      { shopId: 'argos', price: 319.00, inStock: true },
+      { shopId: 'ao', price: 309.00, inStock: true },
+    ]
+  },
+  {
+    id: 'hisense-65-4k-tv',
+    name: '65" 4K ULED Smart TV',
+    brand: 'Hisense',
+    category: 'tv',
+    tags: ['tv', 'television', 'hisense', '4k', 'uled', 'smart tv', '65 inch', 'large tv'],
+    image: 'https://images.unsplash.com/photo-1593359677879-a4bb92f829e1?w=400',
+    prices: [
+      { shopId: 'currys', price: 449.00, inStock: true },
+      { shopId: 'amazon', price: 399.00, inStock: true },
+      { shopId: 'argos', price: 429.00, inStock: true },
+      { shopId: 'ao', price: 419.00, inStock: true },
+    ]
+  },
+  // Laptops
+  {
+    id: 'apple-macbook-air-m2',
+    name: 'MacBook Air 13" M2 8GB 256GB',
+    brand: 'Apple',
+    category: 'laptop',
+    tags: ['laptop', 'macbook', 'apple', 'm2', 'macbook air', 'notebook', 'computer'],
+    image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400',
+    prices: [
+      { shopId: 'currys', price: 999.00, inStock: true },
+      { shopId: 'johnlewis', price: 999.00, inStock: true },
+      { shopId: 'amazon', price: 949.00, inStock: true },
+      { shopId: 'argos', price: 989.00, inStock: true },
+    ]
+  },
+  {
+    id: 'dell-xps-15',
+    name: 'XPS 15" Intel Core i7 16GB 512GB',
+    brand: 'Dell',
+    category: 'laptop',
+    tags: ['laptop', 'dell', 'xps', 'windows laptop', 'notebook', 'computer', 'intel'],
+    image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400',
+    prices: [
+      { shopId: 'currys', price: 1399.00, inStock: true },
+      { shopId: 'johnlewis', price: 1449.00, inStock: true },
+      { shopId: 'amazon', price: 1299.00, inStock: true },
+    ]
+  },
+  {
+    id: 'hp-pavilion-15',
+    name: 'Pavilion 15" AMD Ryzen 5 8GB 512GB',
+    brand: 'HP',
+    category: 'laptop',
+    tags: ['laptop', 'hp', 'pavilion', 'windows laptop', 'notebook', 'amd', 'budget laptop'],
+    image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400',
+    prices: [
+      { shopId: 'currys', price: 549.00, inStock: true },
+      { shopId: 'johnlewis', price: 579.00, inStock: true },
+      { shopId: 'amazon', price: 499.00, inStock: true },
+      { shopId: 'argos', price: 529.00, inStock: true },
+    ]
+  },
+  {
+    id: 'lenovo-ideapad-5',
+    name: 'IdeaPad 5 15" AMD Ryzen 5 8GB',
+    brand: 'Lenovo',
+    category: 'laptop',
+    tags: ['laptop', 'lenovo', 'ideapad', 'windows laptop', 'notebook', 'amd', 'budget laptop'],
+    image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400',
+    prices: [
+      { shopId: 'currys', price: 449.00, inStock: true },
+      { shopId: 'amazon', price: 399.00, inStock: true },
+      { shopId: 'argos', price: 419.00, inStock: true },
+    ]
+  },
+  {
+    id: 'microsoft-surface-pro-9',
+    name: 'Surface Pro 9 Intel i5 8GB 256GB',
+    brand: 'Microsoft',
+    category: 'laptop',
+    tags: ['laptop', 'microsoft', 'surface', 'surface pro', 'tablet laptop', '2-in-1', 'windows'],
+    image: 'https://images.unsplash.com/photo-1542393545-10f5cde2c810?w=400',
+    prices: [
+      { shopId: 'currys', price: 999.00, inStock: true },
+      { shopId: 'johnlewis', price: 1049.00, inStock: true },
+      { shopId: 'amazon', price: 929.00, inStock: true },
+    ]
+  },
+  // Phones
+  {
+    id: 'apple-iphone-15-128gb',
+    name: 'iPhone 15 128GB',
+    brand: 'Apple',
+    category: 'phone',
+    tags: ['phone', 'iphone', 'apple', 'smartphone', 'iphone 15', 'mobile'],
+    image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400',
+    prices: [
+      { shopId: 'currys', price: 799.00, inStock: true },
+      { shopId: 'johnlewis', price: 799.00, inStock: true },
+      { shopId: 'amazon', price: 749.00, inStock: true },
+      { shopId: 'argos', price: 789.00, inStock: true },
+    ]
+  },
+  {
+    id: 'samsung-galaxy-s24-256gb',
+    name: 'Galaxy S24 256GB',
+    brand: 'Samsung',
+    category: 'phone',
+    tags: ['phone', 'samsung', 'galaxy', 'android', 'smartphone', 'galaxy s24', 'mobile'],
+    image: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400',
+    prices: [
+      { shopId: 'currys', price: 849.00, inStock: true },
+      { shopId: 'johnlewis', price: 879.00, inStock: true },
+      { shopId: 'amazon', price: 799.00, inStock: true },
+      { shopId: 'argos', price: 839.00, inStock: true },
+    ]
+  },
+  {
+    id: 'google-pixel-8-128gb',
+    name: 'Pixel 8 128GB',
+    brand: 'Google',
+    category: 'phone',
+    tags: ['phone', 'google', 'pixel', 'android', 'smartphone', 'pixel 8', 'mobile'],
+    image: 'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=400',
+    prices: [
+      { shopId: 'currys', price: 599.00, inStock: true },
+      { shopId: 'johnlewis', price: 629.00, inStock: true },
+      { shopId: 'amazon', price: 549.00, inStock: true },
+    ]
+  },
+  {
+    id: 'samsung-galaxy-a54-5g',
+    name: 'Galaxy A54 5G 128GB',
+    brand: 'Samsung',
+    category: 'phone',
+    tags: ['phone', 'samsung', 'galaxy', 'android', 'smartphone', 'mid-range', '5g', 'mobile'],
+    image: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?w=400',
+    prices: [
+      { shopId: 'currys', price: 349.00, inStock: true },
+      { shopId: 'argos', price: 319.00, inStock: true },
+      { shopId: 'amazon', price: 299.00, inStock: true },
+    ]
+  },
+  // Washing Machines
+  {
+    id: 'samsung-9kg-washing-machine',
+    name: 'Series 5 EcoBubble 9kg 1400rpm',
+    brand: 'Samsung',
+    category: 'washing-machine',
+    tags: ['washing machine', 'washer', 'samsung', 'appliance', 'laundry', '9kg'],
+    image: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=400',
+    prices: [
+      { shopId: 'currys', price: 499.00, inStock: true },
+      { shopId: 'johnlewis', price: 549.00, inStock: true },
+      { shopId: 'ao', price: 479.00, inStock: true },
+      { shopId: 'argos', price: 469.00, inStock: true },
+    ]
+  },
+  {
+    id: 'bosch-series6-9kg-washing-machine',
+    name: 'Series 6 9kg 1400rpm i-DOS',
+    brand: 'Bosch',
+    category: 'washing-machine',
+    tags: ['washing machine', 'washer', 'bosch', 'appliance', 'laundry', '9kg'],
+    image: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=400',
+    prices: [
+      { shopId: 'currys', price: 649.00, inStock: true },
+      { shopId: 'johnlewis', price: 699.00, inStock: true },
+      { shopId: 'ao', price: 629.00, inStock: true },
+    ]
+  },
+  {
+    id: 'aeg-8kg-prosteam',
+    name: 'ProSteam 8kg 1400rpm',
+    brand: 'AEG',
+    category: 'washing-machine',
+    tags: ['washing machine', 'washer', 'aeg', 'appliance', 'laundry', '8kg', 'steam'],
+    image: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=400',
+    prices: [
+      { shopId: 'currys', price: 549.00, inStock: true },
+      { shopId: 'johnlewis', price: 599.00, inStock: true },
+      { shopId: 'ao', price: 529.00, inStock: true },
+    ]
+  },
+  {
+    id: 'hotpoint-7kg-washing-machine',
+    name: 'H-Wash 300 7kg 1400rpm',
+    brand: 'Hotpoint',
+    category: 'washing-machine',
+    tags: ['washing machine', 'washer', 'hotpoint', 'appliance', 'laundry', '7kg', 'budget'],
+    image: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=400',
+    prices: [
+      { shopId: 'currys', price: 329.00, inStock: true },
+      { shopId: 'ao', price: 299.00, inStock: true },
+      { shopId: 'argos', price: 309.00, inStock: true },
+    ]
+  },
+  {
+    id: 'indesit-8kg-washing-machine',
+    name: 'BWE 81284 8kg 1200rpm',
+    brand: 'Indesit',
+    category: 'washing-machine',
+    tags: ['washing machine', 'washer', 'indesit', 'appliance', 'laundry', '8kg', 'budget'],
+    image: 'https://images.unsplash.com/photo-1626806787461-102c1bfaaea1?w=400',
+    prices: [
+      { shopId: 'currys', price: 279.00, inStock: true },
+      { shopId: 'ao', price: 259.00, inStock: true },
+      { shopId: 'argos', price: 269.00, inStock: true },
+    ]
+  },
+  // Fridge Freezers
+  {
+    id: 'samsung-american-fridge-freezer',
+    name: 'American Fridge Freezer 637L',
+    brand: 'Samsung',
+    category: 'fridge',
+    tags: ['fridge', 'fridge freezer', 'american fridge', 'samsung', 'appliance', 'freezer'],
+    image: 'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=400',
+    prices: [
+      { shopId: 'currys', price: 999.00, inStock: true },
+      { shopId: 'johnlewis', price: 1049.00, inStock: true },
+      { shopId: 'ao', price: 979.00, inStock: true },
+      { shopId: 'argos', price: 989.00, inStock: false },
+    ]
+  },
+  {
+    id: 'bosch-fridge-freezer-7030',
+    name: 'Series 4 Fridge Freezer 70/30',
+    brand: 'Bosch',
+    category: 'fridge',
+    tags: ['fridge', 'fridge freezer', 'bosch', 'appliance', 'freezer', '70/30'],
+    image: 'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=400',
+    prices: [
+      { shopId: 'currys', price: 649.00, inStock: true },
+      { shopId: 'johnlewis', price: 699.00, inStock: true },
+      { shopId: 'ao', price: 629.00, inStock: true },
+    ]
+  },
+  {
+    id: 'hotpoint-fridge-freezer',
+    name: 'Day 1 Fridge Freezer 60/40',
+    brand: 'Hotpoint',
+    category: 'fridge',
+    tags: ['fridge', 'fridge freezer', 'hotpoint', 'appliance', 'freezer', 'budget'],
+    image: 'https://images.unsplash.com/photo-1571175443880-49e1d25b2bc5?w=400',
+    prices: [
+      { shopId: 'currys', price: 399.00, inStock: true },
+      { shopId: 'ao', price: 369.00, inStock: true },
+      { shopId: 'argos', price: 379.00, inStock: true },
+    ]
+  },
+  // Sofas
+  {
+    id: 'ikea-kivik-sofa',
+    name: 'KIVIK 3-Seat Sofa Hillared Beige',
+    brand: 'IKEA',
+    category: 'sofa',
+    tags: ['sofa', 'couch', 'settee', 'ikea', 'kivik', '3 seater', 'living room', 'furniture'],
+    image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400',
+    prices: [
+      { shopId: 'ikea', price: 550.00, inStock: true },
+      { shopId: 'dunelm', price: 599.00, inStock: false },
+      { shopId: 'next', price: 649.00, inStock: true },
+    ]
+  },
+  {
+    id: 'dunelm-scala-sofa',
+    name: 'Scala 3-Seat Fabric Sofa',
+    brand: 'Dunelm',
+    category: 'sofa',
+    tags: ['sofa', 'couch', 'settee', 'dunelm', '3 seater', 'living room', 'furniture', 'fabric sofa'],
+    image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400',
+    prices: [
+      { shopId: 'dunelm', price: 499.00, inStock: true },
+      { shopId: 'next', price: 599.00, inStock: true },
+      { shopId: 'marksandspencer', price: 799.00, inStock: true },
+      { shopId: 'argos', price: 549.00, inStock: true },
+    ]
+  },
+  {
+    id: 'next-stamford-corner-sofa',
+    name: 'Stamford Large Corner Sofa',
+    brand: 'Next',
+    category: 'sofa',
+    tags: ['sofa', 'corner sofa', 'couch', 'next', 'living room', 'furniture', 'large sofa'],
+    image: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=400',
+    prices: [
+      { shopId: 'next', price: 999.00, inStock: true },
+      { shopId: 'dunelm', price: 899.00, inStock: true },
+      { shopId: 'marksandspencer', price: 1099.00, inStock: true },
+    ]
+  },
+  // Beds & Mattresses
+  {
+    id: 'ikea-malm-double-bed',
+    name: 'MALM Double Bed Frame High',
+    brand: 'IKEA',
+    category: 'bed',
+    tags: ['bed', 'bed frame', 'double bed', 'ikea', 'malm', 'bedroom', 'furniture'],
+    image: 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=400',
+    prices: [
+      { shopId: 'ikea', price: 229.00, inStock: true },
+      { shopId: 'next', price: 349.00, inStock: true },
+      { shopId: 'argos', price: 299.00, inStock: true },
+      { shopId: 'dunelm', price: 279.00, inStock: true },
+    ]
+  },
+  {
+    id: 'dreams-king-bed-frame',
+    name: 'Sheraton King Bed Frame',
+    brand: 'Dreams',
+    category: 'bed',
+    tags: ['bed', 'bed frame', 'king bed', 'king size', 'dreams', 'bedroom', 'furniture'],
+    image: 'https://images.unsplash.com/photo-1505693314120-0d443867891c?w=400',
+    prices: [
+      { shopId: 'next', price: 549.00, inStock: true },
+      { shopId: 'argos', price: 499.00, inStock: true },
+      { shopId: 'dunelm', price: 479.00, inStock: true },
+    ]
+  },
+  {
+    id: 'silentnight-miracoil-king-mattress',
+    name: 'Miracoil King Size Mattress',
+    brand: 'Silentnight',
+    category: 'bed',
+    tags: ['mattress', 'king mattress', 'silentnight', 'bedroom', 'sleep', 'king size'],
+    image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400',
+    prices: [
+      { shopId: 'currys', price: 299.00, inStock: true },
+      { shopId: 'amazon', price: 279.00, inStock: true },
+      { shopId: 'argos', price: 319.00, inStock: true },
+      { shopId: 'johnlewis', price: 349.00, inStock: true },
+      { shopId: 'dunelm', price: 289.00, inStock: true },
+    ]
+  },
+  {
+    id: 'ikea-sultan-mattress-double',
+    name: 'VATNESTRÖM Double Mattress',
+    brand: 'IKEA',
+    category: 'bed',
+    tags: ['mattress', 'double mattress', 'ikea', 'bedroom', 'sleep', 'double'],
+    image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400',
+    prices: [
+      { shopId: 'ikea', price: 199.00, inStock: true },
+      { shopId: 'argos', price: 249.00, inStock: true },
+    ]
+  },
+  {
+    id: 'ms-natural-king-mattress',
+    name: 'Natural Collection King Mattress',
+    brand: 'M&S',
+    category: 'bed',
+    tags: ['mattress', 'king mattress', 'm&s', 'marks and spencer', 'bedroom', 'sleep', 'king size', 'premium'],
+    image: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=400',
+    prices: [
+      { shopId: 'marksandspencer', price: 599.00, inStock: true },
+      { shopId: 'next', price: 549.00, inStock: true },
+      { shopId: 'johnlewis', price: 649.00, inStock: true },
     ]
   },
 ]
@@ -1147,11 +1660,19 @@ export function getProductsByCategory(categoryId: string): Product[] {
 
 export function searchProducts(query: string): Product[] {
   const lowerQuery = query.toLowerCase()
-  return products.filter(p => 
+  return products.filter(p =>
     p.name.toLowerCase().includes(lowerQuery) ||
     p.brand.toLowerCase().includes(lowerQuery) ||
-    p.category.toLowerCase().includes(lowerQuery)
+    p.category.toLowerCase().includes(lowerQuery) ||
+    (p.tags && p.tags.some(tag => tag.toLowerCase().includes(lowerQuery)))
   )
+}
+
+export function getBigPurchaseProducts(categoryId?: string): Product[] {
+  if (categoryId) {
+    return bigPurchaseProducts.filter(p => p.category === categoryId)
+  }
+  return bigPurchaseProducts
 }
 
 export function getProductById(id: string): Product | undefined {

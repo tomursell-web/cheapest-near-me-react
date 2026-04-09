@@ -218,7 +218,7 @@ export default function PetrolPage() {
               <Fuel className="w-6 h-6 text-amber-700" />
             </div>
             <div>
-              <h1 className="text-3xl font-bold text-foreground">Petrol Prices</h1>
+              <h1 className="text-3xl font-bold text-foreground">Fuel Prices</h1>
               <p className="text-muted-foreground">Find the cheapest fuel near you</p>
             </div>
           </div>

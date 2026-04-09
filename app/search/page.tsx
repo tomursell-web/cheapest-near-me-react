@@ -94,7 +94,7 @@ function SearchResults() {
               Search for products
             </h2>
             <p className="text-muted-foreground max-w-md mx-auto">
-              Enter a product name, brand, or category to find the best prices.
+              Enter a product name, brand, or category to find the best value.
             </p>
           </div>
         )}

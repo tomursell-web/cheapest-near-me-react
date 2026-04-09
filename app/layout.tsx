@@ -12,8 +12,8 @@ const inter = Inter({
 })
 
 export const metadata: Metadata = {
-  title: 'Cheapest Near Me - UK Price Comparison',
-  description: 'Compare prices across UK shops and find the best deals on groceries, pharmacy, hardware, pet food and more.',
+  title: 'Evaluate – Find the Best Value Near You',
+  description: 'Smart value comparison for the UK. Compare fuel prices, big purchases, and everyday shopping from top UK retailers.',
   generator: 'v0.app',
   icons: {
     icon: [
@@ -37,7 +37,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
-  themeColor: '#22c55e',
+  themeColor: '#34a853',
 }
 
 export default function RootLayout({
