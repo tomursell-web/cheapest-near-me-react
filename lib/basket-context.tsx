@@ -26,8 +26,10 @@ export function BasketProvider({ children }: { children: ReactNode }) {
 
   const getTotalsByShop = () => {
     return items.reduce((acc, item) => {
-      const shopName = shops.find(s => s.id === item.shopId)?.name || "Store"
-      const price = item.product.prices.find(p => p.shopId === item.shopId)?.price ?? 0
+      const shop = shops.find(s => s.id === item.shopId)
+      const shopName = shop ? shop.name : "Unknown Shop"
+      const priceObj = item.product.prices.find(p => p.shopId === item.shopId)
+      const price = priceObj ? priceObj.price : 0
       acc[shopName] = (acc[shopName] || 0) + price
       return acc
     }, {} as Record<string, number>)
@@ -41,7 +43,7 @@ export function BasketProvider({ children }: { children: ReactNode }) {
 }
 
 export function useBasket() {
-  const context = useContext(BasketContext);
-  if (!context) throw new Error("useBasket error");
-  return context;
+  const context = useContext(BasketContext)
+  if (!context) throw new Error("useBasket must be used within a BasketProvider")
+  return context
 }
