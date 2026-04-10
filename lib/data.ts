@@ -44,13 +44,14 @@ const createPlaceholderImage = (brand: string, category: Category) => {
   const bg = placeholderColors[category] ?? '#e5e7eb';
   const fg = placeholderTextColor[category] ?? '#111827';
   const initial = brand.charAt(0).toUpperCase();
+  const displayCategory = category === 'household' ? 'Household' : category.charAt(0).toUpperCase() + category.slice(1)
   const svg = `
     <svg xmlns="http://www.w3.org/2000/svg" width="400" height="300">
       <rect width="100%" height="100%" fill="${bg}" />
-      <text x="50%" y="45%" dominant-baseline="middle" text-anchor="middle"
-        font-family="Inter, system-ui, sans-serif" font-size="80" font-weight="700" fill="${fg}">${initial}</text>
-      <text x="50%" y="80%" dominant-baseline="middle" text-anchor="middle"
-        font-family="Inter, system-ui, sans-serif" font-size="24" fill="${fg}">${brand}</text>
+      <text x="50%" y="42%" dominant-baseline="middle" text-anchor="middle"
+        font-family="Inter, system-ui, sans-serif" font-size="88" font-weight="700" fill="${fg}">${initial}</text>
+      <text x="50%" y="82%" dominant-baseline="middle" text-anchor="middle"
+        font-family="Inter, system-ui, sans-serif" font-size="24" fill="${fg}">${displayCategory}</text>
     </svg>
   `;
 
@@ -160,7 +161,8 @@ export function searchProducts(query: string): Product[] {
   return products.filter(product =>
     product.name.toLowerCase().includes(q) ||
     product.brand.toLowerCase().includes(q) ||
-    product.category.toLowerCase().includes(q)
+    product.category.toLowerCase().includes(q) ||
+    (product.tags && product.tags.some(tag => tag.toLowerCase().includes(q)))
   )
 }
 
@@ -170,7 +172,7 @@ export function getProductsByCategory(category: string): Product[] {
 
 export const categories = [
   { id: 'groceries', name: 'Groceries', icon: 'ShoppingCart', color: 'bg-green-100 text-green-800 hover:bg-green-200' },
-  { id: 'household', name: 'Household', icon: 'Home', color: 'bg-blue-100 text-blue-800 hover:bg-blue-200' },
+  { id: 'household', name: 'Household & Cleaning', icon: 'Home', color: 'bg-blue-100 text-blue-800 hover:bg-blue-200' },
   { id: 'pharmacy', name: 'Pharmacy', icon: 'Pill', color: 'bg-red-100 text-red-800 hover:bg-red-200' },
   { id: 'electronics', name: 'Electronics', icon: 'Laptop', color: 'bg-purple-100 text-purple-800 hover:bg-purple-200' },
   { id: 'appliances', name: 'Appliances', icon: 'WashingMachine', color: 'bg-orange-100 text-orange-800 hover:bg-orange-200' },
