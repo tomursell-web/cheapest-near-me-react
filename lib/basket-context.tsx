@@ -9,6 +9,7 @@ type BasketContextType = {
   addItem: (product: Product, shopId: string) => void;
   removeItem: (productId: string, shopId: string) => void;
   getTotalsByShop: () => Record<string, number>;
+  getTotalItems: () => number;
 }
 
 const BasketContext = createContext<BasketContextType | undefined>(undefined)
@@ -35,8 +36,12 @@ export function BasketProvider({ children }: { children: ReactNode }) {
     }, {} as Record<string, number>)
   }
 
+  const getTotalItems = () => {
+    return items.length
+  }
+
   return (
-    <BasketContext.Provider value={{ items, addItem, removeItem, getTotalsByShop }}>
+    <BasketContext.Provider value={{ items, addItem, removeItem, getTotalsByShop, getTotalItems }}>
       {children}
     </BasketContext.Provider>
   )

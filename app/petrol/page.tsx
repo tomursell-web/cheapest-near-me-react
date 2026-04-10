@@ -1,15 +1,22 @@
 "use client"
 
 import { useState, useEffect, useMemo } from "react"
-import { ArrowLeft, Fuel, MapPin, Clock, TrendingDown, Car, Loader2, AlertCircle, RefreshCw, Map, List } from "lucide-react"
+import dynamic from "next/dynamic"
+import { ArrowLeft, Fuel, MapPin, Clock, TrendingDown, Car, Loader2, AlertCircle, RefreshCw, Map, List, Navigation } from "lucide-react"
 import Link from "next/link"
 import { Header } from "@/components/header"
 import { LocationPicker } from "@/components/location-picker"
-import { LocationMap } from "@/components/location-map"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
+import { Slider } from "@/components/ui/slider"
 import { useLocation, calculateDistance, formatDistance } from "@/lib/location-context"
 import { petrolStations as mockStations } from "@/lib/data"
+
+// Dynamic import for fuel map to avoid SSR issues
+const FuelMap = dynamic(() => import('@/components/fuel-map').then(mod => ({ default: mod.FuelMap })), {
+  ssr: false,
+  loading: () => <div className="h-full flex items-center justify-center">Loading map...</div>
+})
 
 type FuelType = "E10" | "B7" | "E5"
 
@@ -64,8 +71,9 @@ export default function PetrolPage() {
   const [isLoading, setIsLoading] = useState(false)
   const [apiError, setApiError] = useState<string | null>(null)
   const [usingMockData, setUsingMockData] = useState(false)
-  const [viewMode, setViewMode] = useState<"list" | "map">("list")
+  const [viewMode, setViewMode] = useState<"list" | "map">("map")
   const [selectedStationId, setSelectedStationId] = useState<string | null>(null)
+  const [searchRadius, setSearchRadius] = useState([5]) // Default 5 miles
   const { coordinates, status } = useLocation()
 
   // Fetch live petrol prices when location changes
@@ -81,7 +89,7 @@ export default function PetrolPage() {
 
       try {
         const response = await fetch(
-          `/api/petrol?lat=${coordinates.lat}&lng=${coordinates.lng}&fuel=${selectedFuel}&radius=5`
+          `/api/petrol?lat=${coordinates.lat}&lng=${coordinates.lng}&fuel=${selectedFuel}&radius=${searchRadius[0]}`
         )
 
         if (!response.ok) {
@@ -114,6 +122,12 @@ export default function PetrolPage() {
       } catch {
         // Fall back to mock data with real distances
         setApiError("Unable to fetch live prices. Showing example data with your location.")
+        const mockStations = [
+          { name: 'Shell', address: '123 High Street', unleadedPrice: 1.65, dieselPrice: 1.75, superPrice: 1.85, lastUpdated: '2 hours ago' },
+          { name: 'BP', address: '456 Main Road', unleadedPrice: 1.62, dieselPrice: 1.72, superPrice: 1.82, lastUpdated: '1 hour ago' },
+          { name: 'Esso', address: '789 Station Road', unleadedPrice: 1.68, dieselPrice: 1.78, superPrice: 1.88, lastUpdated: '3 hours ago' },
+        ]
+        
         const stationsWithDistance = mockStations.map((station, index) => {
           // Spread mock stations around user location
           const offsetLat = (Math.random() - 0.5) * 0.04
@@ -145,7 +159,7 @@ export default function PetrolPage() {
     }
 
     fetchPrices()
-  }, [coordinates, selectedFuel])
+  }, [coordinates, selectedFuel, searchRadius])
 
   // Format price update date
   function formatPriceDate(dateStr: string): string {
@@ -339,6 +353,22 @@ export default function PetrolPage() {
                   ))}
                 </div>
 
+                {/* Search Radius Slider */}
+                <div className="mb-6">
+                  <div className="flex items-center justify-between mb-3">
+                    <label className="text-sm font-medium text-foreground">Search Radius</label>
+                    <span className="text-sm text-muted-foreground">{searchRadius[0]} miles</span>
+                  </div>
+                  <Slider
+                    value={searchRadius}
+                    onValueChange={setSearchRadius}
+                    max={20}
+                    min={1}
+                    step={1}
+                    className="w-full"
+                  />
+                </div>
+
                 {/* View Toggle */}
                 <div className="flex justify-end mb-4">
                   <div className="flex p-1 bg-secondary rounded-lg">
@@ -367,14 +397,11 @@ export default function PetrolPage() {
 
                 {/* Map View */}
                 {viewMode === "map" && (
-                  <div className="mb-6">
-                    <LocationMap
-                      center={coordinates}
-                      markers={mapMarkers}
-                      zoom={13}
-                      height="400px"
-                      selectedMarkerId={selectedStationId || undefined}
-                      onMarkerClick={(marker) => setSelectedStationId(marker.id)}
+                  <div className="mb-6 h-[500px] md:h-[500px] w-full">
+                    <FuelMap
+                      stations={sortedStations}
+                      userLocation={coordinates}
+                      searchRadius={searchRadius[0]}
                     />
                   </div>
                 )}
@@ -445,6 +472,18 @@ export default function PetrolPage() {
                                       Best Price
                                     </span>
                                   )}
+                                  <Button
+                                    size="sm"
+                                    variant="outline"
+                                    className="mt-2 w-full"
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      window.open(`https://www.google.com/maps/dir/?api=1&destination=${station.lat},${station.lng}&travelmode=driving`, '_blank')
+                                    }}
+                                  >
+                                    <Navigation className="w-3 h-3 mr-1" />
+                                    Directions
+                                  </Button>
                                 </div>
                               </div>
                             </div>

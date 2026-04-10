@@ -32,6 +32,9 @@ export default function BasketPage() {
 
           <div className="bg-slate-50 p-6 rounded-xl border border-dashed">
             <h2 className="font-bold mb-4">Shop Subtotals</h2>
+            <p className="text-sm text-slate-600 mb-4">
+              You are shopping at {Object.keys(shopTotals).length} location{Object.keys(shopTotals).length !== 1 ? 's' : ''}
+            </p>
             {Object.entries(shopTotals).map(([name, total]) => (
               <div key={name} className="flex justify-between text-sm mb-2">
                 <span>{name}</span>
@@ -39,7 +42,7 @@ export default function BasketPage() {
               </div>
             ))}
             <Link href="/route">
-              <Button className="w-full mt-6 py-6 text-lg gap-2">
+              <Button className="w-full mt-6 py-6 text-lg gap-2 bg-green-600 hover:bg-green-700">
                 <MapPin className="w-5 h-5" />
                 Plan my shopping route
               </Button>

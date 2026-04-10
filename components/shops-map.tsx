@@ -81,7 +81,7 @@ export function ShopsMap({ products, height = "350px" }: ShopsMapProps) {
     )
   }
 
-  if (status === "loading") {
+  if (!coordinates) {
     return (
       <div
         style={{ height }}
