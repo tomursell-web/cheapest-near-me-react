@@ -120,101 +120,64 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    let apiProducts: any[] = []
+    const openFoodUrl = `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&countries_tags=united-kingdom&page_size=20`
+    const data: OpenFoodFactsResponse = await cachedFetch(openFoodUrl)
+    console.log('Open Food Facts response:', data)
 
-    // Determine which API to use based on query
-    const lowerQuery = query.toLowerCase()
-    const isFoodQuery = lowerQuery.includes('soup') || lowerQuery.includes('pasta') ||
-                       lowerQuery.includes('rice') || lowerQuery.includes('yoghurt') ||
-                       lowerQuery.includes('juice') || lowerQuery.includes('butter') ||
-                       lowerQuery.includes('sausage') || lowerQuery.includes('mince')
-
-    const isElectronicsQuery = lowerQuery.includes('tv') || lowerQuery.includes('phone') ||
-                              lowerQuery.includes('laptop') || lowerQuery.includes('headphone') ||
-                              lowerQuery.includes('vacuum') || lowerQuery.includes('fridge') ||
-                              lowerQuery.includes('washing') || lowerQuery.includes('dryer')
-
-    if (isFoodQuery) {
-      // Use Open Food Facts for food/grocery
-      try {
-        const data: OpenFoodFactsResponse = await cachedFetch(
-          `https://world.openfoodfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&countries_tags=united-kingdom&page_size=20`
-        )
-
-        if (data.products && data.products.length > 0) {
-          apiProducts = data.products.map(product => ({
-            id: `off-${product.code}`,
-            name: product.product_name || 'Unknown Product',
-            brand: product.brands || 'Unknown Brand',
-            image: product.image_url || null,
-            category: determineCategory(query, product.product_name || '', product.categories),
-            price: generateRealisticPrice(product.product_name || query, product.categories || ''),
-            source: 'openfoodfacts'
-          }))
-        }
-      } catch (error) {
-        console.log('Open Food Facts API failed:', error)
-      }
-    } else if (isElectronicsQuery) {
-      // Use Open Products Facts for electronics/appliances
-      try {
-        const data: OpenProductsFactsResponse = await cachedFetch(
-          `https://world.openproductsfacts.org/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&page_size=20`
-        )
-
-        if (data.products && data.products.length > 0) {
-          apiProducts = data.products.map(product => ({
-            id: `opf-${product.code}`,
-            name: product.product_name || 'Unknown Product',
-            brand: product.brands || 'Unknown Brand',
-            image: product.image_url || null,
-            category: determineCategory(query, product.product_name || '', product.categories),
-            price: generateRealisticPrice(product.product_name || query, product.categories || ''),
-            source: 'openproductsfacts'
-          }))
-        }
-      } catch (error) {
-        console.log('Open Products Facts API failed:', error)
-      }
-    }
-
-    // If no API results, fall back to local data
-    if (apiProducts.length === 0) {
-      const localResults = searchProducts(query)
-      apiProducts = localResults.map(product => ({
-        id: product.id,
-        name: product.name,
-        brand: product.brand,
-        image: product.image,
-        category: product.category,
-        price: product.prices.length > 0 ? product.prices[0].price : 0,
-        source: 'local'
+    const apiProducts = (data.products || [])
+      .filter(product => product.product_name || product.brands)
+      .map(product => ({
+        id: `off-${product.code ?? Math.random().toString(36).slice(2)}`,
+        name: product.product_name || 'Unknown Product',
+        brand: product.brands || 'Unknown Brand',
+        image: product.image_url || null,
+        category: determineCategory(query, product.product_name || '', product.categories),
+        price: generateRealisticPrice(product.product_name || query, product.categories || ''),
+        source: 'openfoodfacts'
       }))
+
+    const localResults = searchProducts(query).map(product => ({
+      id: product.id,
+      name: product.name,
+      brand: product.brand,
+      image: product.image,
+      category: product.category,
+      price: product.prices.length > 0 ? product.prices[0].price : 0,
+      source: 'local'
+    }))
+
+    const combinedProductsMap = new Map<string, any>()
+
+    for (const product of [...apiProducts, ...localResults]) {
+      const key = `${product.name.toLowerCase()}|${product.brand.toLowerCase()}`
+      if (!combinedProductsMap.has(key)) {
+        combinedProductsMap.set(key, product)
+      }
     }
 
-    // Add shop pricing variation
-    const shops = ['Tesco', 'Sainsbury\'s', 'Asda', 'Morrisons', 'Aldi', 'Lidl']
+    const combinedProducts = Array.from(combinedProductsMap.values()).slice(0, 20)
+
+    const shops = ['Tesco', "Sainsbury's", 'Asda', 'Morrisons', 'Aldi', 'Lidl']
     const results = []
 
-    for (const product of apiProducts.slice(0, 12)) { // Limit to 12 products
+    for (const product of combinedProducts) {
       for (const shop of shops) {
-        const priceVariation = 0.85 + Math.random() * 0.3 // 85-115% of base price
+        const priceVariation = 0.85 + Math.random() * 0.3
         const shopPrice = Math.round((product.price * priceVariation) * 100) / 100
 
         results.push({
-          id: `${product.id}-${shop.toLowerCase().replace(/'/g, '')}`,
+          id: `${product.id}-${shop.toLowerCase().replace(/'/g, '').replace(/\s+/g, '-')}`,
           name: product.name,
           brand: product.brand,
           image: product.image,
           category: product.category,
           price: shopPrice,
-          shop: shop,
+          shop,
           source: product.source
         })
       }
     }
 
-    // Sort by price
     results.sort((a, b) => a.price - b.price)
 
     return NextResponse.json({
@@ -223,13 +186,11 @@ export async function GET(request: NextRequest) {
       total: results.length,
       source: apiProducts.length > 0 ? 'api' : 'local'
     })
-
   } catch (error) {
     console.error('Search API error:', error)
 
-    // Final fallback to local data
     const localResults = searchProducts(query)
-    const shops = ['Tesco', 'Sainsbury\'s', 'Asda', 'Morrisons', 'Aldi', 'Lidl']
+    const shops = ['Tesco', "Sainsbury's", 'Asda', 'Morrisons', 'Aldi', 'Lidl']
     const results = []
 
     for (const product of localResults.slice(0, 12)) {
